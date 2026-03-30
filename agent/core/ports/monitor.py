@@ -1,4 +1,4 @@
-"""监控接口：定义契约"""
+"""监控接口: 定义契约"""
 from abc import ABC, abstractmethod
 
 

@@ -1,4 +1,4 @@
-"""存储接口：定义契约，plugins 必须实现"""
+"""存储接口: 定义契约, plugins 必须实现"""
 from abc import ABC, abstractmethod
 
 

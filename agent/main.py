@@ -1,4 +1,4 @@
-"""入口：启动 Agent"""
+"""入口: 启动 Agent"""
 
 import sys
 import os
@@ -15,18 +15,18 @@ def main():
     save_preference("code_style", {"type_hints": True, "docstring": True})
     save_preference("preferred_libraries", ["pathlib", "csv"])
     prefs = load_preferences()
-    print(f"📚 已加载偏好：{prefs}")
+    print(f"已加载偏好: {prefs}")
 
     while True:
-        requirement = input("\n请输入你的需求（输入 q 退出）：").strip()
+        requirement = input("\n请输入你的需求(输入 q 退出): ").strip()
         if requirement.lower() == "q":
-            print("👋 再见！")
+            print("再见!")
             break
         if not requirement:
-            print("⚠️ 需求不能为空，请重新输入")
+            print("需求不能为空, 请重新输入")
             continue
 
-        print("\n🚀 开始运行...\n")
+        print("\n开始运行...\n")
         initial_state = {
             "requirement": requirement,
             "code": "",
@@ -42,10 +42,10 @@ def main():
         result = app.invoke(initial_state)
 
         print("=" * 50)
-        print("✅ 最终代码：")
+        print("最终代码:")
         print("=" * 50)
         print(result["code"])
-        print(f"\n📊 共循环了 {result['iteration']} 次")
+        print(f"\n共循环了 {result['iteration']} 次")
 
 
 if __name__ == "__main__":

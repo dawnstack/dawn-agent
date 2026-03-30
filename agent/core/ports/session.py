@@ -1,4 +1,4 @@
-"""Session 接口：定义契约"""
+"""Session 接口: 定义契约"""
 from abc import ABC, abstractmethod
 
 

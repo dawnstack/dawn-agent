@@ -23,4 +23,4 @@ class CodeExecutor(BaseTool):
                 "success": result.returncode == 0,
             }
         except subprocess.TimeoutExpired:
-            return {"stdout": "", "stderr": f"执行超时（超过{CODE_EXECUTION_TIMEOUT}秒）", "success": False}
+            return {"stdout": "", "stderr": f"执行超时(超过{CODE_EXECUTION_TIMEOUT}秒)", "success": False}

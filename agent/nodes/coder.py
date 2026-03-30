@@ -1,4 +1,4 @@
-"""Coder Agent：负责生成和修改代码"""
+"""Coder Agent: 负责生成和修改代码"""
 
 import json
 from agent.core.base_agent import BaseAgent
@@ -10,7 +10,7 @@ class CoderAgent(BaseAgent):
 
     @with_retry(max_retries=3, delay=1.0)
     def run(self, state: dict) -> dict:
-        print(f"\n🤖 Coder 第 {state['iteration'] + 1} 次写代码...")
+        print(f"\nCoder 第 {state['iteration'] + 1} 次写代码...")
         llm = get_coder_llm()
         prompt = (
             self._build_fix_prompt(state)
@@ -31,7 +31,7 @@ requirements: {state['requirement']}"""
         review = json.loads(state["review"])
         issues_text = "\n".join(
             [
-                f"- [{i['severity']}] {i['description']}\n  修改方式：{i['action']}"
+                f"- [{i['severity']}] {i['description']}\n  修改方式: {i['action']}"
                 for i in review["issues"]
             ]
         )

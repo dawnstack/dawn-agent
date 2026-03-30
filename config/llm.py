@@ -1,4 +1,4 @@
-"""LLM 工厂：统一管理所有模型初始化，换模型只改这里"""
+"""LLM 工厂: 统一管理所有模型初始化, 换模型只改这里"""
 
 from langchain_openai import ChatOpenAI
 from config.settings import (
@@ -11,7 +11,7 @@ from config.settings import (
 
 
 def get_coder_llm():
-    """Coder：千问云端，生成能力强"""
+    """Coder: 千问云端, 生成能力强"""
     return ChatOpenAI(
         model=CODER_MODEL,
         api_key=DASHSCOPE_API_KEY,
@@ -21,7 +21,7 @@ def get_coder_llm():
 
 
 def get_reviewer_llm(structured_output=None):
-    """Reviewer：本地 Ollama，速度快省钱"""
+    """Reviewer: 本地 Ollama, 速度快省钱"""
     llm = ChatOpenAI(
         model=REVIEWER_MODEL,
         api_key=DASHSCOPE_API_KEY,
@@ -34,7 +34,15 @@ def get_reviewer_llm(structured_output=None):
 
 
 def get_summarizer_llm():
-    """Summarizer：千问，摘要要求不高"""
+    """Summarizer: 千问, 摘要要求不高"""
+    return ChatOpenAI(
+        model=SUMMARIZER_MODEL,
+        api_key=DASHSCOPE_API_KEY,
+        base_url=DASHSCOPE_BASE_URL,
+    )
+
+def get_supervisor_llm():
+    """Supervisor:千问,调度"""
     return ChatOpenAI(
         model=SUMMARIZER_MODEL,
         api_key=DASHSCOPE_API_KEY,

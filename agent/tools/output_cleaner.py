@@ -2,7 +2,7 @@
 
 
 def clean_code(text: str) -> str:
-    """清理 LLM 返回的代码，去掉 markdown 代码块"""
+    """清理 LLM 返回的代码, 去掉 markdown 代码块"""
     text = text.strip()
     if text.startswith("```"):
         text = text.split("```")[1]
@@ -12,7 +12,7 @@ def clean_code(text: str) -> str:
 
 
 def clean_json(text: str) -> str:
-    """清理 LLM 返回的 JSON，去掉 markdown 包裹"""
+    """清理 LLM 返回的 JSON, 去掉 markdown 包裹"""
     text = text.strip()
     if text.startswith("```"):
         text = text.split("```")[1]

@@ -1,4 +1,4 @@
-"""长期记忆：跨 session 持久化用户偏好"""
+"""长期记忆: 跨 session 持久化用户偏好"""
 import sqlite3
 import json
 from config.settings import DB_PATH

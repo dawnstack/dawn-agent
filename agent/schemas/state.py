@@ -18,9 +18,9 @@ class ReviewResult(BaseModel):
 class AgentState(TypedDict):
     requirement: str        # 用户需求
     code: str               # 当前代码
-    review: str             # 当前 review（JSON 字符串）
+    review: str             # 当前 review(JSON 字符串)
     iteration: int          # 循环计数
     review_history: list    # 历史 review 列表
     review_summary: str     # 压缩后的历史摘要
-    preferences: dict       # 用户偏好（从 memory 加载）
+    preferences: dict       # 用户偏好(从 memory 加载)
     execution_result: dict  # 代码执行结果

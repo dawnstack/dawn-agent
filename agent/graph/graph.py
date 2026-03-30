@@ -1,4 +1,4 @@
-"""Graph 定义：节点连接和流程控制"""
+"""Graph 定义: 节点连接和流程控制"""
 import json
 from langgraph.graph import StateGraph, START, END
 from agent.schemas.state import AgentState
@@ -16,23 +16,23 @@ executor = CodeExecutor()
 
 
 def executor_node(state: AgentState) -> dict:
-    print("\n⚙️ 执行代码...")
+    print("\n执行代码...")
     result = executor.execute(state["code"])
-    print(f"{'✅ 执行成功' if result['success'] else '❌ 执行失败：' + result['stderr'][:100]}")
+    print(f"{'执行成功' if result['success'] else '执行失败: ' + result['stderr'][:100]}")
     return {"execution_result": result}
 
 
 def should_continue(state: AgentState) -> str:
     if state["iteration"] >= MAX_ITERATIONS:
-        print("⚠️ 达到最大循环次数，强制结束")
+        print("达到最大循环次数, 强制结束")
         return END
     review = json.loads(state["review"])
     if review["passed"]:
-        print("✅ Review 通过！")
+        print("Review 通过!")
         return END
-    print(f"🔄 发现 {len(review['issues'])} 个问题，继续修改...")
+    print(f"发现 {len(review['issues'])} 个问题, 继续修改...")
     for i in review["issues"]:
-        print(f"  👉 {i['action']}")
+        print(f"  {i['action']}")
     return "coder"
 
 

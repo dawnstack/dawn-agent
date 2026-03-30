@@ -1,6 +1,8 @@
 """入口：启动 Agent"""
+
 import sys
 import os
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agent.memory.memory import init_db, save_preference, load_preferences
@@ -15,25 +17,35 @@ def main():
     prefs = load_preferences()
     print(f"📚 已加载偏好：{prefs}")
 
-    initial_state = {
-        "requirement": "write a function, read a file of CSV, return the average of every column.",
-        "code": "",
-        "review": "",
-        "iteration": 0,
-        "review_history": [],
-        "review_summary": "",
-        "preferences": prefs,
-        "execution_result": {},
-    }
+    while True:
+        requirement = input("\n请输入你的需求（输入 q 退出）：").strip()
+        if requirement.lower() == "q":
+            print("👋 再见！")
+            break
+        if not requirement:
+            print("⚠️ 需求不能为空，请重新输入")
+            continue
 
-    app = build_graph()
-    result = app.invoke(initial_state)
+        print("\n🚀 开始运行...\n")
+        initial_state = {
+            "requirement": requirement,
+            "code": "",
+            "review": "",
+            "iteration": 0,
+            "review_history": [],
+            "review_summary": "",
+            "preferences": prefs,
+            "execution_result": {},
+        }
 
-    print("=" * 50)
-    print("✅ 最终代码：")
-    print("=" * 50)
-    print(result["code"])
-    print(f"\n📊 共循环了 {result['iteration']} 次")
+        app = build_graph()
+        result = app.invoke(initial_state)
+
+        print("=" * 50)
+        print("✅ 最终代码：")
+        print("=" * 50)
+        print(result["code"])
+        print(f"\n📊 共循环了 {result['iteration']} 次")
 
 
 if __name__ == "__main__":

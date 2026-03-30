@@ -1,15 +1,22 @@
 """Coder Agent：负责生成和修改代码"""
+
 import json
 from agent.core.base_agent import BaseAgent
 from config.llm import get_coder_llm
+from agent.tools.retry import with_retry
 
 
 class CoderAgent(BaseAgent):
 
+    @with_retry(max_retries=3, delay=1.0)
     def run(self, state: dict) -> dict:
         print(f"\n🤖 Coder 第 {state['iteration'] + 1} 次写代码...")
         llm = get_coder_llm()
-        prompt = self._build_fix_prompt(state) if (state["code"] and state["review"]) else self._build_generate_prompt(state)
+        prompt = (
+            self._build_fix_prompt(state)
+            if (state["code"] and state["review"])
+            else self._build_generate_prompt(state)
+        )
         prompt = self._inject_preferences(prompt, state)
         response = llm.invoke(prompt)
         return {"code": response.content, "iteration": state["iteration"] + 1}
@@ -22,10 +29,12 @@ requirements: {state['requirement']}"""
 
     def _build_fix_prompt(self, state: dict) -> str:
         review = json.loads(state["review"])
-        issues_text = "\n".join([
-            f"- [{i['severity']}] {i['description']}\n  修改方式：{i['action']}"
-            for i in review["issues"]
-        ])
+        issues_text = "\n".join(
+            [
+                f"- [{i['severity']}] {i['description']}\n  修改方式：{i['action']}"
+                for i in review["issues"]
+            ]
+        )
         return f"""you are a python3 specialist.
 your last version: {state['code']}
 review suggestions:

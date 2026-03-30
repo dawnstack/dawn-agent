@@ -1,11 +1,14 @@
 """Reviewer Agent：负责代码审查"""
+
 from agent.core.base_agent import BaseAgent
 from config.llm import get_reviewer_llm
 from agent.schemas.state import ReviewResult
+from agent.tools.retry import with_retry
 
 
 class ReviewerAgent(BaseAgent):
 
+    @with_retry(max_retries=3, delay=1.0)
     def run(self, state: dict) -> dict:
         print(f"\n🔍 Reviewer 第 {state['iteration']} 次 review...")
         llm = get_reviewer_llm(structured_output=ReviewResult)

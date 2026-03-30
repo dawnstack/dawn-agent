@@ -5,7 +5,9 @@ import os
 DASHSCOPE_API_KEY = os.environ.get("DASHSCOPE_API_KEY")
 DASHSCOPE_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 CODER_MODEL = "qwen-coder-turbo-0919"
-REVIEWER_MODEL = "qwen3:8b"
+REVIEWER_MODEL = "qwen3-coder-plus"
+SUMMARIZER_MODEL = "qwen3-max-preview"
+SUPPERVISOR_MODEL = "qwen3-max-2026-01-23"
 
 # Agent
 MAX_ITERATIONS = 3

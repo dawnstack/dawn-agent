@@ -20,19 +20,31 @@ class ReviewerAgent(BaseAgent):
             else f"执行失败: {exec_result.get('stderr', '')}"
         )
 
-        prompt = f"""you are a strict python3 reviewer.
-review the below code:
-1. potential bugs  2. error handling  3. readability  4. best practices
+        prompt = f"""you are a python3 code reviewer.
+review the below code and execution result.
 
 codes: {state['code']}
 execution result: {exec_info}
 
-Judgment: passed=false only for high severity, otherwise passed=true.
+## Severity Definition (STRICT)
+- high: causes crashes, data loss, security vulnerabilities, or incorrect results. MUST fix.
+- medium: bad practices, missing error handling, performance issues. SHOULD fix.
+- low: style, naming, minor readability. NICE to fix.
 
-请严格按照以下 json 格式返回:
+## Passing Rules
+- passed=true if: no high severity issues found
+- passed=true if: execution succeeded and only medium/low issues exist  
+- passed=false ONLY if: there are one or more high severity issues
+
+## Review Checklist
+1. Does it crash or produce wrong results? (high)
+2. Does it handle exceptions where needed? (medium)
+3. Is it reasonably readable? (low)
+
+return JSON only:
 {{
-  "passed": true,
-  "issues": [{{"severity": "high/medium/low", "description": "问题描述", "action": "修改建议"}}]
+  "passed": true or false,
+  "issues": [{{"severity": "high/medium/low", "description": "...", "action": "..."}}]
 }}"""
 
         response: ReviewResult = llm.invoke(prompt)

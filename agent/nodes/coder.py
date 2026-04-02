@@ -11,9 +11,13 @@ class CoderAgent(BaseAgent):
     @with_retry(max_retries=3, delay=1.0)
     def run(self, state: dict) -> dict:
         print(f"\nCoder 第 {state['iteration'] + 1} 次写代码...")
+        instructions = state.get("supervisor_instructions", "{}")
+        inst_data = json.loads(instructions) if instructions else {}
+        priority_issues = inst_data.get("priority_issues", [])
+
         llm = get_coder_llm()
         prompt = (
-            self._build_fix_prompt(state)
+            self._build_fix_prompt(state, priority_issues)
             if (state["code"] and state["review"])
             else self._build_generate_prompt(state)
         )
@@ -27,7 +31,7 @@ please write codes based on the below requirements.
 only return codes, no explanation, no markdown code blocks.
 requirements: {state['requirement']}"""
 
-    def _build_fix_prompt(self, state: dict) -> str:
+    def _build_fix_prompt(self, state: dict, priority_issues: list) -> str:  # ← 加参数
         review = json.loads(state["review"])
         issues_text = "\n".join(
             [
@@ -35,12 +39,22 @@ requirements: {state['requirement']}"""
                 for i in review["issues"]
             ]
         )
+        priority_text = (
+            "\n".join(f"- {i}" for i in priority_issues)
+            if priority_issues
+            else "无特别指令"
+        )
         return f"""you are a python3 specialist.
 your last version: {state['code']}
 review suggestions:
 {issues_text}
 please modify based on suggestions, do not rewrite.
-only return codes, no explanation, no markdown code blocks."""
+only return codes, no explanation, no markdown code blocks.
+
+## Supervisor 指令
+本次优先处理以下问题：
+{priority_text}
+"""
 
     def _inject_preferences(self, prompt: str, state: dict) -> str:
         prefs = state.get("preferences", {})

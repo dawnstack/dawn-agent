@@ -16,6 +16,12 @@ class ReviewResult(BaseModel):
     issues: List[ReviewIssue]
 
 
+class SupervisorDecision(BaseModel):
+    decision: str
+    reason: str
+    priority_issues: List[str]
+
+
 class AgentState(TypedDict):
     requirement: str  # 用户需求
     code: str  # 当前代码

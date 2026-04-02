@@ -1,6 +1,5 @@
 """Graph 定义: 节点连接和流程控制"""
 
-import json
 from langgraph.graph import StateGraph, START, END
 from agent.schemas.state import AgentState
 from agent.nodes.coder import CoderAgent
@@ -26,13 +25,9 @@ def executor_node(state: AgentState) -> dict:
     )
     return {"execution_result": result}
 
-
-MAX_ITERATIONS = 10
-
-
 def route_supervisor(state: AgentState) -> str:
     if state.get("iteration", 0) >= MAX_ITERATIONS:
-        print(f"[Safety] 达到绝对上限 {MAX_ITERATIONS} 次，强制结束")
+        print(f"[Safety] 达到绝对上限 {MAX_ITERATIONS} 次, 强制结束")
         return "end"
     return state.get("next", "coder")
 

@@ -18,7 +18,15 @@ def main():
     print(f"已加载偏好: {prefs}")
 
     while True:
-        requirement = input("\n请输入你的需求(输入 q 退出): ").strip()
+        try:
+            requirement = input("\n请输入你的需求(输入 q 退出): ").strip()
+        except EOFError:
+            print("\n收到 EOF, 退出程序")
+            break
+        except KeyboardInterrupt:
+            print("\n收到中断信号, 退出程序")
+            break
+
         if requirement.lower() == "q":
             print("再见!")
             break
@@ -36,6 +44,8 @@ def main():
             "review_summary": "",
             "preferences": prefs,
             "execution_result": {},
+            "next": "",
+            "supervisor_instructions": "",
         }
 
         app = build_graph()

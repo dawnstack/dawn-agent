@@ -41,10 +41,15 @@ def get_summarizer_llm():
         base_url=DASHSCOPE_BASE_URL,
     )
 
-def get_supervisor_llm():
-    """Supervisor:千问,调度"""
-    return ChatOpenAI(
+
+def get_supervisor_llm(structured_output=None):
+    """Supervisor: 千问, 调度"""
+    llm = ChatOpenAI(
         model=SUMMARIZER_MODEL,
         api_key=DASHSCOPE_API_KEY,
         base_url=DASHSCOPE_BASE_URL,
+        max_completion_tokens=2000,
     )
+    if structured_output:
+        return llm.with_structured_output(structured_output)
+    return llm
